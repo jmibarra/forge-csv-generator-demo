@@ -1,0 +1,16 @@
+modules:
+  jira:issueAction:
+    - key: csv-generator-demo-hello-world-issue-action
+      resource: main
+      resolver:
+        function: resolver
+      viewportSize: medium
+      title: Generar reporte de horas
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/hello-world/build
+app:
+  id: ari:cloud:ecosystem::app/9268c423-3fcd-4e4e-abcd-7f6391e4c5bb
