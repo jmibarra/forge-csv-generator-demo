@@ -52,6 +52,10 @@ function App() {
 
     view.close()
 
+    //TODO: Ver como restringir a un solo proyecto o tipo de ticket
+    //TODO: Ver de implementar el consumo de info desde tickets reales
+    //TODO: Ver de consumir el pedido desde el ticket desde que ejecuto.
+
     return (
         <></>
     );
