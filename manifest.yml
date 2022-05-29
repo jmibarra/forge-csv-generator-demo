@@ -1,5 +1,5 @@
 modules:
-  jira:issueAction:
+  jira:projectPage:
     - key: csv-generator-demo-hello-world-issue-action
       resource: main
       resolver:
@@ -17,6 +17,7 @@ app:
 permissions:
   scopes:
     - 'read:jira-work'
-    content:
+  content:
     styles:
       - 'unsafe-inline'
+

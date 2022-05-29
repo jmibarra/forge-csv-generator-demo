@@ -1,10 +1,25 @@
-import { useReportIssueInfo } from './hooks/useReportIssueInfo';
-import Spinner from '@atlaskit/spinner';
-import { invoke, view } from '@forge/bridge';
-import { ExportToCsv } from 'export-to-csv-file';
 import { useEffect, useState } from 'react';
+import { invoke, view } from '@forge/bridge';
 
-import styles from './App.css';
+import Button from '@atlaskit/button';
+import Spinner from '@atlaskit/spinner';
+import Form, {
+    ErrorMessage,
+    Field,
+    FormFooter,
+    ValidMessage,
+  } from '@atlaskit/form';
+import { DatePicker } from '@atlaskit/datetime-picker';
+
+import { useReportIssueInfo } from './hooks/useReportIssueInfo';
+
+import { ExportToCsv } from 'export-to-csv-file';
+
+const validateField = (value) => {
+    if (!value) {
+      return 'REQUIRED';
+    }
+  };
 
 
 function App() {
@@ -65,14 +80,55 @@ function App() {
     //TODO: Pensar una versión sencilla con material ui y que me permita seleccionar el periodo desde el mismo modulo y que el elemento sea en la barra de proyectos
 
     return (
-        <div className={styles.container}>
-            
-            { issueKey ? <div>{issueKey}</div> : <Spinner/> }
-            {loading ? <Spinner size={"xlarge"} /> 
-                : issue && <span>{issue.key}</span>
-            }
-            
-        </div>
+        <Form onSubmit={(formState) => console.log('form submitted', formState)}>
+            {({ formProps }) => (
+                <form {...formProps}>
+                    <Field
+                        name="datetime-picker-start"
+                        label="Fecha de inicio"
+                        validate={validateField}
+                        isRequired
+                        defaultValue=""
+                    >
+                        {({ fieldProps, error, meta: { valid } }) => (
+                            <>
+                            <DatePicker {...fieldProps} />
+                            {valid && (
+                                <ValidMessage>Debe ingresar una fecha válida</ValidMessage>
+                            )}
+                            {error === 'REQUIRED' && (
+                                <ErrorMessage>Este campo es requerido</ErrorMessage>
+                            )}
+                            </>
+                        )}
+                    </Field>
+                    <Field
+                        name="datetime-picker-end"
+                        label="Fecha de fin"
+                        validate={validateField}
+                        isRequired
+                        defaultValue=""
+                    >
+                        {({ fieldProps, error, meta: { valid } }) => (
+                            <>
+                            <DatePicker {...fieldProps} />
+                            {valid && (
+                                <ValidMessage>Debe ingresar una fecha válida</ValidMessage>
+                            )}
+                            {error === 'REQUIRED' && (
+                                <ErrorMessage>Este campo es requerido</ErrorMessage>
+                            )}
+                            </>
+                        )}
+                    </Field>
+                    <FormFooter>
+                        <Button type="submit" appearance="primary">
+                            Submit
+                        </Button>
+                    </FormFooter>
+                </form>
+            )}
+        </Form>
     );
 }
 
