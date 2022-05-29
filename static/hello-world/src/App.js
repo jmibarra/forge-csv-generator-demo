@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { ExportToCsv } from 'export-to-csv-file';
+import { useReportIssueInfo } from './hooks/useReportIssueInfo';
 import { invoke, view } from '@forge/bridge';
+import { ExportToCsv } from 'export-to-csv-file';
+import { useEffect, useState } from 'react';
 
-import Button from '@atlaskit/button';
 
 function App() {
-    // useEffect(() => {
-    //     invoke('getText', { example: 'my-invoke-variable' }).then(setData);
-    //   }, []);
+    const [issueKey, setissueKey] = useState("")
+    const { loading, errors, issues } = useReportIssueInfo(issueKey);
 
+    useEffect(() => {
+        invoke('getText').then(setissueKey);
+    },[])
+    
     var data = [
         {
           name: 'Test 1',
@@ -46,18 +49,25 @@ function App() {
         // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
     };
        
-    const csvExporter = new ExportToCsv(options);
+    //const csvExporter = new ExportToCsv(options);
        
-    csvExporter.generateCsv(data);
+    //csvExporter.generateCsv(data);
 
-    view.close()
+    //view.close()
 
     //TODO: Ver como restringir a un solo proyecto o tipo de ticket
     //TODO: Ver de implementar el consumo de info desde tickets reales
     //TODO: Ver de consumir el pedido desde el ticket desde que ejecuto.
 
+    //TODO: Pensar una versión sencilla con material ui y que me permita seleccionar el periodo desde el mismo modulo y que el elemento sea en la barra de proyectos
+
     return (
-        <></>
+        <>
+            <div>{issueKey}</div>
+            <div>{errors}</div>
+            <div>{issues}</div>
+            <div>{issues[0]}</div>
+        </>
     );
 }
 

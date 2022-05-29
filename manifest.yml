@@ -14,3 +14,6 @@ resources:
     path: static/hello-world/build
 app:
   id: ari:cloud:ecosystem::app/9268c423-3fcd-4e4e-abcd-7f6391e4c5bb
+permissions:
+  scopes:
+    - 'read:jira-work'
