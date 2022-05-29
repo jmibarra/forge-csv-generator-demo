@@ -29,7 +29,6 @@ import {invoke,requestJira} from "@forge/bridge";
                         setIssues([]);
                         // Format error messages to be displayed in the editor
                         setErrors(data.errorMessages.map((message) => ({ message })));
-                        console.log(errors)
                     } else {
                         throw new Error(`Invalid response code: ${response.status}`);
                     }
