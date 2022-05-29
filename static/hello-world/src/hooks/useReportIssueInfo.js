@@ -4,15 +4,15 @@ import {invoke,requestJira} from "@forge/bridge";
 /**
  * Retrieve a collection of issues matching the provided JQL string.
  */
- export const useReportIssueInfo = (issueKey) => {
+ export const useReportIssueInfo = (jql) => {
     
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState([]);
-    const [issue, setIssue] = useState();
+    const [issues, setIssues] = useState([]);
 
     useEffect(() => {
 
-        if (issueKey === undefined) {
+        if (jql === undefined) {
             return;
         }
 
@@ -21,38 +21,44 @@ import {invoke,requestJira} from "@forge/bridge";
 
         const fetchIssues = async () => {
             try {
-                const response = await requestJira(`/rest/api/3/issue/${issueKey}`);
+                const response = await requestJira(`/rest/api/3/search?jql=${jql}&fields=status`);
                 const data = await response.json();
 
                 if (response.status >= 400) {
                     if (data.errorMessages && data.errorMessages.length > 0) {
-                        setIssue();
+                        setIssues([]);
                         // Format error messages to be displayed in the editor
                         setErrors(data.errorMessages.map((message) => ({ message })));
+                        console.log(errors)
                     } else {
                         throw new Error(`Invalid response code: ${response.status}`);
                     }
                 } else {
                     // Map the status category of each issue
-                    console.log(data.fields)
-                    setIssue(data)
+                    const issues = data.issues.map((issue) => {
+                        const statusCategory = issue.fields.status.statusCategory;
+                        return {
+                            statusCategory: statusCategory.name,
+                            statusCategoryKey: statusCategory.key,
+                        }
+                    })
+                    setIssues(issues);
                 }
             } catch (e) {
                 console.error("Could not fetch issues", e);
-                setIssue();
+                setIssues([]);
                 setErrors([{ message: "Could not fetch issues" }]);
             } finally {
-                console.log("Entro al finally")
                 setLoading(false);
             }
         }
 
         fetchIssues();
-    }, [issueKey,setLoading, setIssue, setErrors])
+    }, [jql,setLoading, setIssues, setErrors])
 
     return {
         loading,
         errors,
-        issue
+        issues
     }
 }
