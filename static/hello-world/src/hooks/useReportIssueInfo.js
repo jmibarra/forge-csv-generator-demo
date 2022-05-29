@@ -8,7 +8,7 @@ import {invoke,requestJira} from "@forge/bridge";
     
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState([]);
-    const [issues, setIssues] = useState([]);
+    const [issue, setIssue] = useState();
 
     useEffect(() => {
 
@@ -26,7 +26,7 @@ import {invoke,requestJira} from "@forge/bridge";
 
                 if (response.status >= 400) {
                     if (data.errorMessages && data.errorMessages.length > 0) {
-                        setIssues([]);
+                        setIssue();
                         // Format error messages to be displayed in the editor
                         setErrors(data.errorMessages.map((message) => ({ message })));
                     } else {
@@ -35,22 +35,24 @@ import {invoke,requestJira} from "@forge/bridge";
                 } else {
                     // Map the status category of each issue
                     console.log(data.fields)
+                    setIssue(data)
                 }
             } catch (e) {
                 console.error("Could not fetch issues", e);
-                setIssues([]);
+                setIssue();
                 setErrors([{ message: "Could not fetch issues" }]);
             } finally {
+                console.log("Entro al finally")
                 setLoading(false);
             }
         }
 
         fetchIssues();
-    }, [issueKey,setLoading, setIssues, setErrors])
+    }, [issueKey,setLoading, setIssue, setErrors])
 
     return {
         loading,
         errors,
-        issues
+        issue
     }
 }

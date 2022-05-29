@@ -17,3 +17,6 @@ app:
 permissions:
   scopes:
     - 'read:jira-work'
+    content:
+    styles:
+      - 'unsafe-inline'

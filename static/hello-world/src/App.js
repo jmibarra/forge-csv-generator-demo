@@ -1,12 +1,15 @@
 import { useReportIssueInfo } from './hooks/useReportIssueInfo';
+import Spinner from '@atlaskit/spinner';
 import { invoke, view } from '@forge/bridge';
 import { ExportToCsv } from 'export-to-csv-file';
 import { useEffect, useState } from 'react';
 
+import styles from './App.css';
+
 
 function App() {
     const [issueKey, setissueKey] = useState("")
-    const { loading, errors, issues } = useReportIssueInfo(issueKey);
+    const { loading, errors, issue } = useReportIssueInfo(issueKey);
 
     useEffect(() => {
         invoke('getText').then(setissueKey);
@@ -62,12 +65,14 @@ function App() {
     //TODO: Pensar una versión sencilla con material ui y que me permita seleccionar el periodo desde el mismo modulo y que el elemento sea en la barra de proyectos
 
     return (
-        <>
-            <div>{issueKey}</div>
-            <div>{errors}</div>
-            <div>{issues}</div>
-            <div>{issues[0]}</div>
-        </>
+        <div className={styles.container}>
+            
+            { issueKey ? <div>{issueKey}</div> : <Spinner/> }
+            {loading ? <Spinner size={"xlarge"} /> 
+                : issue && <span>{issue.key}</span>
+            }
+            
+        </div>
     );
 }
 
