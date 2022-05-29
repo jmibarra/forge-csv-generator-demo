@@ -34,7 +34,7 @@ import {invoke,requestJira} from "@forge/bridge";
                     }
                 } else {
                     // Map the status category of each issue
-                    const issues = data.issues.map((issue) => {
+                    const issues = data.issues.map((issue) => { //Aca debo meter la lógica para armar la linea del CSV para cada issue
                         const statusCategory = issue.fields.status.statusCategory;
                         return {
                             statusCategory: statusCategory.name,

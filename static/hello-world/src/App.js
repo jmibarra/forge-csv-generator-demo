@@ -36,30 +36,6 @@ function App() {
         } //Ver si anda bien un cartel indica que no hay tickets para dicho periodo(Que no se vea siempre cuando el valor inicial de issue es [])
 
     }, [issues])
-    
-    var data = [
-        {
-          name: 'Test 1',
-          age: 13,
-          average: 8.2,
-          approved: true,
-          description: "using 'Content here, content here' "
-        },
-        {
-          name: 'Test 2',
-          age: 11,
-          average: 8.2,
-          approved: true,
-          description: "using 'Content here, content here' "
-        },
-        {
-          name: 'Test 4',
-          age: 10,
-          average: 8.2,
-          approved: true,
-          description: "using 'Content here, content here' "
-        },
-    ];
        
     const options = { 
         fieldSeparator: ',',
@@ -75,20 +51,8 @@ function App() {
     };
 
     const handleSubmit = (formData) => {
-
-            setJql("created >= "+formData['datetime-picker-start']+" AND created <= "+formData['datetime-picker-end']+" AND project = PDP order by created DESC")
-
-            // Traer todos los issues
-            //Armar los datos del CSV
-            // Descargar el reporte.
-            //Si todo esta ok mensaje de exito
-            //Si algo falla mensaje de error
-            
-
+        setJql("created >= "+formData['datetime-picker-start']+" AND created <= "+formData['datetime-picker-end']+" AND project = PDP order by created DESC");
     }
-
-    //TODO: Ver como restringir a un solo proyecto o tipo de ticket
-    //TODO: Ver de implementar el consumo de info desde tickets reales
 
     return (
         <>
