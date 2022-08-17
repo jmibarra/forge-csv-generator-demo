@@ -3,8 +3,8 @@ import Resolver from '@forge/resolver';
 const resolver = new Resolver();
 
 resolver.define('getText', (req) => {
-    const issueKey = req.context.extension.issue.key;
-    return issueKey;
+    const projectKey = req.context.extension.project.key;
+    return projectKey;
 });
 
 export const handler = resolver.getDefinitions();

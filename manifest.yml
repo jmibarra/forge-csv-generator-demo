@@ -5,13 +5,13 @@ modules:
       resolver:
         function: resolver
       viewportSize: medium
-      title: Generar reporte de horas
+      title: Administración horas extra
   function:
     - key: resolver
       handler: index.handler
 resources:
   - key: main
-    path: static/hello-world/build
+    path: static/hhee-admin/build
 app:
   id: ari:cloud:ecosystem::app/9268c423-3fcd-4e4e-abcd-7f6391e4c5bb
 permissions:

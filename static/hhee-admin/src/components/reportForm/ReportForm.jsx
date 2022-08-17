@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { invoke, view } from '@forge/bridge';
 
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
+import Select, { components } from '@atlaskit/select';
 import Form, {
     ErrorMessage,
     Field,
@@ -12,18 +12,11 @@ import Form, {
 import { DatePicker } from '@atlaskit/datetime-picker';
 import SectionMessage from '@atlaskit/section-message';
 
-import { useReportIssueInfo } from './hooks/useReportIssueInfo';
+import { useReportIssueInfo } from '../../hooks/useReportIssueInfo';
 
 import { ExportToCsv } from 'export-to-csv-file';
 
-const validateField = (value) => {
-    if (!value) {
-      return 'REQUIRED';
-    }
-  };
-
-
-function App() {
+const ReportForm = () => {
     const [jql, setJql] = useState();
     const [success, setSuccess] = useState(false)
     const { loading, errors, issues } = useReportIssueInfo(jql);
@@ -36,7 +29,13 @@ function App() {
         } //Ver si anda bien un cartel indica que no hay tickets para dicho periodo(Que no se vea siempre cuando el valor inicial de issue es [])
 
     }, [issues])
-       
+
+    const validateField = (value) => {
+        if (!value) {
+          return 'REQUIRED';
+        }
+    };
+
     const options = { 
         fieldSeparator: ',',
         quoteStrings: '"',
@@ -51,7 +50,8 @@ function App() {
     };
 
     const handleSubmit = (formData) => {
-        setJql("created >= "+formData['datetime-picker-start']+" AND created <= "+formData['datetime-picker-end']+" AND project = PDP order by created DESC");
+        console.log(formData['select-picker-issueType'])
+        setJql("created >= "+formData['datetime-picker-start']+" AND created <= "+formData['datetime-picker-end']+" AND project = HHEE order by created DESC");
     }
 
     return (
@@ -97,6 +97,32 @@ function App() {
                                 </>
                             )}
                         </Field>
+                        <Field
+                            name="select-picker-issueType"
+                            label="Tipo de registro"
+                            validate={validateField}
+                            isRequired
+                            defaultValue=""
+                        >
+                            {({ fieldProps, error, meta: { valid } }) => (
+                                <>
+                                    <Select
+                                        {...fieldProps}
+                                        options={[
+                                            { label: 'Horas extra', value: 'Horas extra' },
+                                            { label: 'Horas de guardia', value: 'Horas de guardia' }
+                                        ]}
+                                        placeholder="Seleccione un tipo de registro"
+                                    />
+                                    {valid && (
+                                        <ValidMessage>Fecha de inicio válida</ValidMessage>
+                                    )}
+                                    {error === 'REQUIRED' && (
+                                        <ErrorMessage>Este campo es requerido</ErrorMessage>
+                                    )}
+                                </>
+                            )}
+                        </Field>
                         <FormFooter>
                             <Button type="submit" appearance="primary">
                                 Submit
@@ -129,7 +155,7 @@ function App() {
             }
             
         </>
-    );
+    )
 }
 
-export default App;
+export default ReportForm;
